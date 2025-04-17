@@ -1,6 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Item
 from .forms import ItemForm
+#alteração
+from django.http import HttpResponse
+from openpyxl import Workbook
+from openpyxl.styles import Alignment
+
 
 def home(request):
     return render(request, 'home.html')
@@ -37,3 +42,37 @@ def excluir_item(request, id):
     item = get_object_or_404(Item, id=id)
     item.delete()
     return redirect('listar_itens')
+
+# alteração 
+def exportar_xlsx(request):
+    # Cria um novo workbook e seleciona a planilha ativa
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Itens"
+
+    # Adiciona o cabeçalho
+    ws['A1'] = 'Nome'
+    ws['B1'] = 'Espécime'
+    ws['C1'] = 'Data de Coleta'
+
+    # Aplica o alinhamento centralizado no cabeçalho
+    for cell in ws["1:1"]:
+        cell.alignment = Alignment(horizontal="center", vertical="center")
+
+    # Pega todos os itens cadastrados no banco de dados
+    itens = Item.objects.all()
+
+    # Preenche os dados dos itens
+    for row_num, item in enumerate(itens, start=2):
+        ws[f'A{row_num}'] = item.nome
+        ws[f'B{row_num}'] = item.especime
+        ws[f'C{row_num}'] = item.data_coleta.strftime('%Y-%m-%d')  # Formata a data para YYYY-MM-DD
+
+    # Configura a resposta HTTP para download do arquivo .xlsx
+    response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    response['Content-Disposition'] = 'attachment; filename="itens_planilha.xlsx"'
+
+    # Salva o arquivo no objeto HttpResponse
+    wb.save(response)
+
+    return response

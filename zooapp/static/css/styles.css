@@ -19,11 +19,11 @@ body.dark-mode {
 }
 
 body.dark-mode .sidebar {
-  background-color: #2e7d32; /* Verde escuro */
+  background-color: #1c4d1f; /* Verde escuro */
 }
 
 body.dark-mode .top-bar {
-  background-color: #27662a;
+  background-color: #1a471d;
   border-bottom: 1px solid #444;
 }
 
@@ -336,6 +336,48 @@ body.dark-mode .page-title {
 
 .item-list tr:hover {
   background-color: #f9f9f9;
+}
+
+/* Wrapper para alinhar o botão à direita */
+.exportar-wrapper {
+  text-align: right;
+  margin: 20px 0;
+}
+
+/* Estilo base do botão */
+.btn-exportar {
+  display: inline-block;
+  background-color: #4CAF50; /* verde suave (pode ser adaptado à sua paleta) */
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+  font-weight: 500;
+}
+
+/* Hover effect */
+.btn-exportar:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+/* Active effect */
+.btn-exportar:active {
+  background-color: #3d8b40;
+  transform: scale(0.98);
+}
+
+/* Suporte ao dark mode */
+body.dark-mode .btn-exportar {
+  background-color: #1e90ff; /* azul vibrante no dark mode */
+  color: #fff;
+}
+
+body.dark-mode .btn-exportar:hover {
+  background-color: #1c7ed6;
 }
 
 /* AÇÕES - BOTÕES DE EDITAR E EXCLUIR */

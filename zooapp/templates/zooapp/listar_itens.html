@@ -37,6 +37,11 @@
     {% endfor %}
   </tbody>
 </table>
+<!--Alteração para exporta xlsx-->
+<div class="exportar-wrapper">
+  <a href="{% url 'exportar_xlsx' %}" class="btn-exportar">Exportar para Excel</a>
+</div>
+
 
 <!-- Modal de Edição -->
 <div id="editModal" class="modal">
