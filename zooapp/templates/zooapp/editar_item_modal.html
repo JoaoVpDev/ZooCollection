@@ -4,23 +4,55 @@
   <span class="close-btn">&times;</span>
 </div>
 
-<form method="POST" action="{% url 'editar_item' item.id %}">
+<form method="POST" action="{% url 'editar_item' item.id %}" id="formEditarItem" onsubmit="return validarCamposEditar()">
   {% csrf_token %}
-  
+
   <div class="form-group">
     <label for="{{ form.nome.id_for_label }}">Nome:</label>
     {{ form.nome|add_class:"form-input" }}
+    {% if form.nome.errors %}
+      <div class="error">{{ form.nome.errors.as_text }}</div>
+    {% endif %}
   </div>
 
   <div class="form-group">
     <label for="{{ form.especime.id_for_label }}">Espécime:</label>
     {{ form.especime|add_class:"form-input" }}
+    {% if form.especime.errors %}
+      <div class="error">{{ form.especime.errors.as_text }}</div>
+    {% endif %}
   </div>
 
   <div class="form-group">
     <label for="{{ form.data_coleta.id_for_label }}">Data de Coleta:</label>
     {{ form.data_coleta|add_class:"form-input" }}
+    {% if form.data_coleta.errors %}
+      <div class="error">{{ form.data_coleta.errors.as_text }}</div>
+    {% endif %}
   </div>
 
   <button type="submit" class="btn">Salvar</button>
 </form>
+
+<script>
+function validarCamposEditar() {
+  const nome = document.querySelector('#id_nome').value.trim();
+  const especime = document.querySelector('#id_especime').value.trim();
+  const dataColeta = document.querySelector('#id_data_coleta').value.trim();
+
+  if (!nome || !especime || !dataColeta) {
+    alert('Por favor, preencha todos os campos antes de salvar.');
+    return false;
+  }
+
+  return true;
+}
+</script>
+
+<style>
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 4px;
+}
+</style>
