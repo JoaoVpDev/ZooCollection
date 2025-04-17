@@ -1,0 +1,85 @@
+{% extends 'zooapp/base.html' %}
+
+{% block content %}
+<h2 class="page-title">Itens Cadastrados</h2>
+
+<table class="item-list">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Espécime</th>
+      <th>Data de Coleta</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in itens %}
+    <tr>
+      <td>{{ item.nome }}</td>
+      <td>{{ item.especime }}</td>
+      <td>{{ item.data_coleta }}</td>
+      <td>
+        <button class="btn btn-editar" data-id="{{ item.id }}">
+          <i class="fas fa-pen"></i>
+        </button>
+        <form method="post" action="{% url 'excluir_item' item.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-excluir">
+            <i class="fas fa-trash"></i>
+          </button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="4">Nenhum item cadastrado ainda.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Modal de Edição -->
+<div id="editModal" class="modal">
+  <div class="modal-content" id="modal-form-container">
+    <!-- Formulário será carregado aqui -->
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll(".btn-editar").forEach(button => {
+    button.addEventListener("click", () => {
+      const itemId = button.getAttribute("data-id");
+      if (!itemId) {
+        alert("ID do item não encontrado!");
+        return;
+      }
+
+      fetch(`/editar/${itemId}/`)
+        .then(response => {
+          if (!response.ok) throw new Error("Erro ao carregar formulário.");
+          return response.text();
+        })
+        .then(data => {
+          document.getElementById("modal-form-container").innerHTML = data;
+          document.getElementById("editModal").style.display = "block";
+        })
+        .catch(error => {
+          console.error("Erro ao buscar formulário:", error);
+        });
+    });
+  });
+
+  window.onclick = function(event) {
+    const modal = document.getElementById("editModal");
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
+
+  document.addEventListener("click", function(e) {
+    if (e.target.classList.contains("close-btn")) {
+      document.getElementById("editModal").style.display = "none";
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% load form_extras %}
+
+<div class="modal-header">
+  <span class="close-btn">&times;</span>
+</div>
+
+<form method="POST" action="{% url 'editar_item' item.id %}">
+  {% csrf_token %}
+  
+  <div class="form-group">
+    <label for="{{ form.nome.id_for_label }}">Nome:</label>
+    {{ form.nome|add_class:"form-input" }}
+  </div>
+
+  <div class="form-group">
+    <label for="{{ form.especime.id_for_label }}">Espécime:</label>
+    {{ form.especime|add_class:"form-input" }}
+  </div>
+
+  <div class="form-group">
+    <label for="{{ form.data_coleta.id_for_label }}">Data de Coleta:</label>
+    {{ form.data_coleta|add_class:"form-input" }}
+  </div>
+
+  <button type="submit" class="btn">Salvar</button>
+</form>

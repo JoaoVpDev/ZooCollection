@@ -1,0 +1,23 @@
+{% extends 'zooapp/base.html' %}
+
+{% block content %}
+  <a href="{% url 'listar_itens' %}" class="back-button">← Voltar para a lista</a>
+  <h2 class="page-title">Adicionar Novo Item</h2>
+
+  <form method="post" class="item-form">
+    {% csrf_token %}
+    
+    {% if form.errors %}
+      <div class="form-errors">
+        {% for field in form %}
+          {% for error in field.errors %}
+            <p class="error">{{ error }}</p>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    {% endif %}
+    
+    {{ form.as_p }}
+    <button type="submit">Salvar</button>
+  </form>
+{% endblock %}

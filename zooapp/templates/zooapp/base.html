@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>ZooCollection</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <nav class="sidebar" id="sidebar">
+    <a href="{% url 'home' %}" class="logo">
+      <img src="{% static 'img/dino.png' %}" alt="Logo Dino">
+      <span class="logo-text">ZooCollection</span>
+    </a>
+    <ul class="menu-list">
+      <li>
+        <a href="{% url 'listar_itens' %}">
+          <i class="fas fa-search"></i>
+          <span>Itens cadastrados</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'adicionar_item' %}">
+          <i class="fas fa-plus-circle"></i>
+          <span>Adicionar itens</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <header class="top-bar">
+    <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+    <div class="icons">
+      <i id="darkModeToggle" class="fas fa-moon"></i>
+      <i class="fas fa-bell"></i>
+      <i class="fas fa-user"></i>
+    </div>
+  </header>
+
+  <main class="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <script>
+    const toggleBtn = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      body.classList.add('dark-mode');
+      darkModeToggle.classList.replace('fa-moon', 'fa-sun');
+    } else {
+      body.classList.remove('dark-mode');
+      darkModeToggle.classList.replace('fa-sun', 'fa-moon');
+    }
+
+    darkModeToggle.addEventListener('click', () => {
+      const isDarkMode = body.classList.contains('dark-mode');
+      if (isDarkMode) {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        darkModeToggle.classList.replace('fa-sun', 'fa-moon');
+      } else {
+        body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        darkModeToggle.classList.replace('fa-moon', 'fa-sun');
+      }
+    });
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+    });
+  </script>
+</body>
+</html>
