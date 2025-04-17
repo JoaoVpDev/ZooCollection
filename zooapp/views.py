@@ -5,7 +5,8 @@ from .forms import ItemForm
 from django.http import HttpResponse
 from openpyxl import Workbook
 from openpyxl.styles import Alignment
-
+import openpyxl
+from django.contrib import messages
 
 def home(request):
     return render(request, 'home.html')
@@ -76,3 +77,26 @@ def exportar_xlsx(request):
     wb.save(response)
 
     return response
+
+
+def importar_xlsx(request):
+    if request.method == "POST" and request.FILES.get("arquivo_excel"):
+        arquivo = request.FILES["arquivo_excel"]
+        wb = openpyxl.load_workbook(arquivo)
+        sheet = wb.active
+
+        for i, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
+            nome, especime, data_coleta = row
+            if nome and especime and data_coleta:
+                Item.objects.create(
+                    nome=nome,
+                    especime=especime,
+                    data_coleta=data_coleta
+                )
+            else:
+                messages.warning(request, f"Linha {i} ignorada por dados incompletos.")
+
+        messages.success(request, "Importação concluída com sucesso!")
+        return redirect("listar_itens")
+    
+    return render(request, "importar_xlsx.html")

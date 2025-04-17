@@ -338,47 +338,73 @@ body.dark-mode .page-title {
   background-color: #f9f9f9;
 }
 
-/* Wrapper para alinhar o botão à direita */
-.exportar-wrapper {
-  text-align: right;
-  margin: 20px 0;
+/* Alinhamento dos botões */
+.buttons-container {
+  display: flex;
+  justify-content: flex-end; /* Alinha os botões à direita */
+  gap: 16px; /* Espaçamento entre os botões */
+  margin-bottom: 16px;
 }
 
-/* Estilo base do botão */
-.btn-exportar {
-  display: inline-block;
-  background-color: #4CAF50; /* verde suave (pode ser adaptado à sua paleta) */
-  color: white;
+/* Estilos do botão "Importar Excel" */
+.btn-importar {
   padding: 10px 20px;
-  font-size: 16px;
+  background-color: #4CAF50; /* Verde */
+  color: white;
+  border-radius: 5px;
   text-decoration: none;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  border: none;
-  font-weight: 500;
+  text-align: center;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
 
-/* Hover effect */
+.btn-importar:hover {
+  background-color: #45a049; /* Efeito de hover mais escuro */
+}
+
+.btn-importar:active {
+  background-color: #388e3c; /* Efeito de clique */
+}
+
+/* Estilos do botão "Exportar para Excel" */
+.btn-exportar {
+  padding: 10px 20px;
+  background-color: #2196F3; /* Azul */
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
 .btn-exportar:hover {
-  background-color: #45a049;
-  transform: scale(1.05);
+  background-color: #0b7dda; /* Efeito de hover mais escuro */
 }
 
-/* Active effect */
 .btn-exportar:active {
-  background-color: #3d8b40;
-  transform: scale(0.98);
+  background-color: #1976d2; /* Efeito de clique */
 }
 
-/* Suporte ao dark mode */
-body.dark-mode .btn-exportar {
-  background-color: #1e90ff; /* azul vibrante no dark mode */
-  color: #fff;
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .btn-importar {
+    background-color: #388e3c; /* Verde escuro no dark mode */
+  }
+
+  .btn-importar:hover {
+    background-color: #45a049;
+  }
+
+  .btn-exportar {
+    background-color: #1976d2; /* Azul escuro no dark mode */
+  }
+
+  .btn-exportar:hover {
+    background-color: #0b7dda;
+  }
 }
 
-body.dark-mode .btn-exportar:hover {
-  background-color: #1c7ed6;
-}
 
 /* AÇÕES - BOTÕES DE EDITAR E EXCLUIR */
 .item-list td .btn {

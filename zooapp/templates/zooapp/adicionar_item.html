@@ -18,6 +18,11 @@
     {% endif %}
     
     {{ form.as_p }}
+    <div class="buttons-container">
+      <a href="{% url 'importar_xlsx' %}" class="btn-importar">
+        Importar Excel
+      </a>
+    </div>
     <button type="submit">Salvar</button>
   </form>
 {% endblock %}

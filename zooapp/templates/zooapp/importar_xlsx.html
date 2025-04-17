@@ -1,0 +1,15 @@
+{% extends 'zooapp/base.html' %}
+
+{% block content %}
+  <h2>Importar Itens via Excel</h2>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="arquivo_excel">Selecione o arquivo .xlsx:</label>
+      <input type="file" name="arquivo_excel" accept=".xlsx" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Importar</button>
+  </form>
+{% endblock %}
