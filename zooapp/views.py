@@ -114,27 +114,3 @@ def importar_xlsx(request):
         return redirect("listar_itens")
 
     return render(request, "importar_xlsx.html")
-
-
-def excluir_itens_massa(request):
-    if request.method == "POST":
-        # Recebe os itens selecionados
-        itens_selecionados = request.POST.getlist("itens_selecionados")
-
-        if itens_selecionados:
-            # Converte os IDs em inteiros e exclui os itens
-            itens = Item.objects.filter(id__in=itens_selecionados)
-            quantidade_deletada = itens.delete()[
-                0
-            ]  # .delete() retorna tupla (quantidade_deletada, {model: deleted_count})
-
-            if quantidade_deletada > 0:
-                messages.success(
-                    request, f"{quantidade_deletada} itens excluídos com sucesso."
-                )
-            else:
-                messages.warning(request, "Nenhum item foi selecionado para exclusão.")
-        else:
-            messages.warning(request, "Nenhum item foi selecionado para exclusão.")
-
-        return redirect("listar_itens")
