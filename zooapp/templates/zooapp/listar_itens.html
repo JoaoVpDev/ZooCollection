@@ -3,48 +3,57 @@
 {% block content %}
 <h2 class="page-title">Itens Cadastrados</h2>
 
-<table class="item-list">
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>Espécime</th>
-      <th>Data de Coleta</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for item in itens %}
-    <tr>
-      <td>{{ item.nome }}</td>
-      <td>{{ item.especime }}</td>
-      <td>{{ item.data_coleta }}</td>
-      <td>
-        <button class="btn btn-editar" data-id="{{ item.id }}">
-          <i class="fas fa-pen"></i>
-        </button>
-        <form method="post" action="{% url 'excluir_item' item.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-excluir">
-            <i class="fas fa-trash"></i>
+<form method="POST" action="{% url 'excluir_itens_massa' %}">
+  {% csrf_token %}
+  <table class="item-list">
+    <thead>
+      <tr>
+        <th><input type="checkbox" id="check_all"></th> <!-- Checkbox para selecionar todos -->
+        <th>Nome</th>
+        <th>Espécime</th>
+        <th>Data de Coleta</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in itens %}
+      <tr>
+        <td><input type="checkbox" name="itens_selecionados" value="{{ item.id }}"></td>
+        <td>{{ item.nome }}</td>
+        <td>{{ item.especime }}</td>
+        <td>{{ item.data_coleta }}</td>
+        <td>
+          <button class="btn btn-editar" data-id="{{ item.id }}">
+            <i class="fas fa-pen"></i>
           </button>
-        </form>
-      </td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="4">Nenhum item cadastrado ainda.</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-<!--Alteração para exporta xlsx-->
+          <form method="post" action="{% url 'excluir_item' item.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-excluir">
+              <i class="fas fa-trash"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">Nenhum item cadastrado ainda.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Botão para excluir selecionados -->
+  <div class="buttons-container">
+    <button type="submit" class="btn btn-danger">Excluir Selecionados</button>
+  </div>
+</form>
+
+<!-- Alteração para exportar xlsx -->
 <div class="buttons-container">
   <a href="{% url 'exportar_xlsx' %}" class="btn-exportar">
     Exportar para Excel
   </a>
 </div>
-
-
 
 <!-- Modal de Edição -->
 <div id="editModal" class="modal">
@@ -54,6 +63,14 @@
 </div>
 
 <script>
+  // Seleciona todos os checkboxes quando o checkbox principal for marcado
+  document.getElementById("check_all").onclick = function () {
+    let checkboxes = document.getElementsByName("itens_selecionados");
+    for (let checkbox of checkboxes) {
+      checkbox.checked = this.checked;
+    }
+  };
+
   document.querySelectorAll(".btn-editar").forEach(button => {
     button.addEventListener("click", () => {
       const itemId = button.getAttribute("data-id");
@@ -77,14 +94,14 @@
     });
   });
 
-  window.onclick = function(event) {
+  window.onclick = function (event) {
     const modal = document.getElementById("editModal");
     if (event.target === modal) {
       modal.style.display = "none";
     }
   };
 
-  document.addEventListener("click", function(e) {
+  document.addEventListener("click", function (e) {
     if (e.target.classList.contains("close-btn")) {
       document.getElementById("editModal").style.display = "none";
     }
